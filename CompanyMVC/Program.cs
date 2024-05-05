@@ -1,3 +1,9 @@
+using CompanyMVC.BLL.Interfaces;
+using CompanyMVC.BLL.Repositories;
+using CompanyMVC.DAL.Data;
+using CompanyMVC.PL.Helpers;
+using Microsoft.EntityFrameworkCore;
+
 namespace CompanyMVC
 {
     public class Program
@@ -8,6 +14,15 @@ namespace CompanyMVC
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<AppDbContext>(options => {
+
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
 
             var app = builder.Build();
 
