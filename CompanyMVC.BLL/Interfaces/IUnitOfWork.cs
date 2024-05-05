@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace CompanyMVC.BLL.Interfaces
 {
-    public interface IDepartmentRepository : IGenericRepository<Department>
+    public interface IUnitOfWork : IAsyncDisposable
     {
-        
+        IGenericRepository<T> Repository<T>() where T : ModelBase;
+
+        Task<int> CompleteAsync();
     }
 }
+    

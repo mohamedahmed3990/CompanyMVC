@@ -19,7 +19,7 @@ namespace CompanyMVC
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddScoped(typeof(IDepartmentRepository), typeof(DepartmentRepository));
+            builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
 
             var app = builder.Build();
 

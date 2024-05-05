@@ -6,17 +6,17 @@ namespace CompanyMVC.PL.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentRepository _departmentRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DepartmentController(IDepartmentRepository departmentRepo)
+        public DepartmentController(IUnitOfWork unitOfWork)
         {
-            _departmentRepo = departmentRepo;
+            _unitOfWork = unitOfWork;
         }
 
 
         public IActionResult Index()
         {
-            var department = _departmentRepo.GetAll();
+            var department = _unitOfWork.Repository<Department>().GetAll();
             return View(department);
         }
 
@@ -31,7 +31,7 @@ namespace CompanyMVC.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                var count = _departmentRepo.Add(department);
+                var count = _unitOfWork.Repository<Department>().Add(department);
                 if (count > 0)
                 {
                     TempData["Message"] = "Department is created successfully";
@@ -52,7 +52,7 @@ namespace CompanyMVC.PL.Controllers
             if (!id.HasValue)
                 return BadRequest();
 
-            var department = _departmentRepo.GetById(id.Value);
+            var department = _unitOfWork.Repository<Department>().GetById(id.Value);
             if (department is null)
                 return NotFound();
 
@@ -82,7 +82,7 @@ namespace CompanyMVC.PL.Controllers
             {
                 try
                 {
-                    _departmentRepo.Update(department);
+                    _unitOfWork.Repository<Department>().Update(department);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -107,7 +107,7 @@ namespace CompanyMVC.PL.Controllers
             if (id != department.Id) return NotFound(); 
             try
             {
-                _departmentRepo.Delete(department);
+                _unitOfWork.Repository<Department>().Delete(department);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
