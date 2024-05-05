@@ -1,6 +1,7 @@
 using CompanyMVC.BLL.Interfaces;
 using CompanyMVC.BLL.Repositories;
 using CompanyMVC.DAL.Data;
+using CompanyMVC.PL.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace CompanyMVC
@@ -20,6 +21,8 @@ namespace CompanyMVC
             });
 
             builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
 
             var app = builder.Build();
 

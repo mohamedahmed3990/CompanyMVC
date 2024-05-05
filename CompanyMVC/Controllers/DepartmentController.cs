@@ -1,5 +1,7 @@
-﻿using CompanyMVC.BLL.Interfaces;
+﻿using AutoMapper;
+using CompanyMVC.BLL.Interfaces;
 using CompanyMVC.DAL.Model;
+using CompanyMVC.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyMVC.PL.Controllers
@@ -7,17 +9,20 @@ namespace CompanyMVC.PL.Controllers
     public class DepartmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public DepartmentController(IUnitOfWork unitOfWork)
+        public DepartmentController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
 
         public IActionResult Index()
         {
             var department = _unitOfWork.Repository<Department>().GetAll();
-            return View(department);
+            var mappedDepartment = _mapper.Map<IEnumerable<Department>, IEnumerable<DepartmentViewModel>>(department);
+            return View(mappedDepartment);
         }
 
         public IActionResult Create()
@@ -27,11 +32,12 @@ namespace CompanyMVC.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Department department) 
+        public IActionResult Create(DepartmentViewModel departmentVM) 
         {
             if (ModelState.IsValid)
             {
-                var count = _unitOfWork.Repository<Department>().Add(department);
+                var mappedDepartment = _mapper.Map<DepartmentViewModel, Department>(departmentVM);   
+                var count = _unitOfWork.Repository<Department>().Add(mappedDepartment);
                 if (count > 0)
                 {
                     TempData["Message"] = "Department is created successfully";
@@ -53,10 +59,12 @@ namespace CompanyMVC.PL.Controllers
                 return BadRequest();
 
             var department = _unitOfWork.Repository<Department>().GetById(id.Value);
+            var mappedDepartment = _mapper.Map<Department, DepartmentViewModel>(department);
+
             if (department is null)
                 return NotFound();
 
-            return View(viewName, department);
+            return View(viewName, mappedDepartment);
         }
 
 
@@ -75,14 +83,15 @@ namespace CompanyMVC.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute]int id, Department department)
+        public IActionResult Edit([FromRoute]int id, DepartmentViewModel departmentVM)
         {
-            if (id != department.Id) return BadRequest();
+            if (id != departmentVM.Id) return BadRequest();
             if(ModelState.IsValid)
             {
                 try
                 {
-                    _unitOfWork.Repository<Department>().Update(department);
+                    var mappedDepartment = _mapper.Map<DepartmentViewModel, Department>(departmentVM);
+                    _unitOfWork.Repository<Department>().Update(mappedDepartment);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -90,7 +99,7 @@ namespace CompanyMVC.PL.Controllers
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
             }
-            return View(department);
+            return View(departmentVM);
         }
 
 
@@ -102,12 +111,13 @@ namespace CompanyMVC.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute]int id, Department department)
+        public IActionResult Delete([FromRoute]int id, DepartmentViewModel departmentVM)
         {
-            if (id != department.Id) return NotFound(); 
+            if (id != departmentVM.Id) return NotFound(); 
             try
             {
-                _unitOfWork.Repository<Department>().Delete(department);
+                var mappedDepartment = _mapper.Map<DepartmentViewModel, Department>(departmentVM);
+                _unitOfWork.Repository<Department>().Delete(mappedDepartment);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -115,7 +125,7 @@ namespace CompanyMVC.PL.Controllers
                 ModelState.AddModelError(string.Empty, ex.Message);
             }
             
-            return View(department);
+            return View(departmentVM);
         }
 
 
