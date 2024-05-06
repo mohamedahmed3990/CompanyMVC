@@ -13,7 +13,7 @@ namespace CompanyMVC.BLL.Repositories
 {
     public class GenericRepositoy<T> : IGenericRepository<T> where T : ModelBase  
     {
-        private readonly AppDbContext _dbContext;
+        private protected readonly AppDbContext _dbContext;
 
         public GenericRepositoy(AppDbContext dbContext)
         {

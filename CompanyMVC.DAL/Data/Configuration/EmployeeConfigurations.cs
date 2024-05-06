@@ -13,6 +13,7 @@ namespace CompanyMVC.DAL.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
+            builder.Property(E => E.Id).UseIdentityColumn(1,1);
             builder.Property(E => E.Salary).HasColumnType("decimal(18,2)");
 
             builder.Property(E => E.Name)
@@ -21,8 +22,8 @@ namespace CompanyMVC.DAL.Data.Configuration
 
             builder.HasOne(E => E.Department)
                    .WithMany()
-                   .OnDelete(DeleteBehavior.Cascade)
-                   ;
+                   .OnDelete(DeleteBehavior.Cascade);
+                   
 
 
 

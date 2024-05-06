@@ -5,6 +5,7 @@ namespace CompanyMVC.PL.ViewModels
 {
     public class EmployeeViewModel
     {
+        public int Id { get; set; }
         [Required(ErrorMessage ="Name is Required")]
         [MaxLength(50)]
         [MinLength(5)]
@@ -29,6 +30,6 @@ namespace CompanyMVC.PL.ViewModels
         public DateTime HireDate { get; set; }
 
         public int? DepartmentId { get; set; }
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
     }
 }

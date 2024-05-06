@@ -9,6 +9,8 @@ namespace CompanyMVC.PL.Helpers
         public MappingProfiles()
         {
             CreateMap<DepartmentViewModel, Department>().ReverseMap();
+
+            CreateMap<EmployeeViewModel, Employee>().ReverseMap();
         }
     }
 }
