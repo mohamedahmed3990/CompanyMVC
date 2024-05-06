@@ -1,5 +1,11 @@
 ﻿@model EmployeeViewModel
 
+@inject IUnitOfWork _unitOfWork
+
+@{
+    var departments = new SelectList(_unitOfWork.Repository<Department>().GetAll(), nameof(Department.Id), nameof(Department.Name));
+}
+
 <div class="form-group">
     <label class="col-form-label" asp-for="Name"></label>
     <input class="form-control" asp-for="Name" readonly />
@@ -12,10 +18,7 @@
     <label class="col-form-label" asp-for="Address"></label>
     <input class="form-control" asp-for="Address" readonly />
 </div>
-<div class="form-group">
-    <label class="col-form-label" asp-for="Department"></label>
-    <input class="form-control" asp-for="Department" readonly />
-</div>
+
 <div class="form-group">
     <label class="col-form-label" asp-for="Salary"></label>
     <input class="form-control" asp-for="Salary" readonly />
@@ -37,4 +40,11 @@
     <input class="form-control" asp-for="HireDate" readonly />
 </div>
 
+<div class="form-group">
+    <label class="col-form-label" asp-for="Department"></label>
+    <select class="form-control" asp-for="DepartmentId" asp-items="@departments" disabled>
+        <option value="@null"> -- Select Department -- </option>
+
+    </select>
+</div>
 

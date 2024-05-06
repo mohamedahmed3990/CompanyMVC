@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using CompanyMVC.BLL.Interfaces;
+using CompanyMVC.BLL.Repositories;
+using CompanyMVC.BLL.Specifications;
 using CompanyMVC.DAL.Model;
 using CompanyMVC.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +20,30 @@ namespace CompanyMVC.PL.Controllers
         }
 
 
-        public IActionResult Index()
+        public IActionResult Index(string searchInp)
         {
-            var employee = _unitOfWork.Repository<Employee>().GetAll();
+            if (string.IsNullOrEmpty(searchInp))
+            {
+                var spec = new EmployeeWithDepartmentSpecifications();
 
-            var mappedemp = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employee);
+                var employee = _unitOfWork.Repository<Employee>().GetAllSpecifications(spec);
 
-            return View(mappedemp);
+                var mappedemp = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employee);
+
+                return View(mappedemp);
+            }
+            else
+            {
+                //var employee = _unitOfWork._employeeRepository.SearchByName(searchInp.ToLower());
+                var spec = new EmployeeWithDepartmentSpecifications(searchInp);
+
+                var employee = _unitOfWork.Repository<Employee>().GetAllSpecifications(spec);
+
+                var mappedemp = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(employee);
+
+                return View(mappedemp);
+            }
+
         }
 
         public IActionResult Create()
@@ -57,7 +76,10 @@ namespace CompanyMVC.PL.Controllers
         {
             if (!id.HasValue) return BadRequest();
 
-            var employee = _unitOfWork.Repository<Employee>().GetById(id.Value);
+            var spec = new EmployeeWithDepartmentSpecifications(id.Value);
+
+            var employee = _unitOfWork.Repository<Employee>().GetByIdSpecification(spec);
+
             var mappedEmp = _mapper.Map<Employee, EmployeeViewModel>(employee);
 
             if (employee is null) return NotFound();

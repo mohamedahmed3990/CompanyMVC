@@ -14,7 +14,8 @@ namespace CompanyMVC.BLL.Repositories
     {
         private readonly AppDbContext _dbContext;
         private Hashtable _repositories;
-        private IEmployeeRepository _employeeRepository;
+
+        public IEmployeeRepository _employeeRepository { get; set; }
 
         public UnitOfWork(AppDbContext dbContext)
         {

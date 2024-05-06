@@ -16,5 +16,9 @@ namespace CompanyMVC.BLL.Interfaces
         int Add(T entity);
         int Update(T entity);
         int Delete(T entity);
+
+        IEnumerable<T> GetAllSpecifications(ISpecifications<T> spec);
+
+        T? GetByIdSpecification(ISpecifications<T> spec);
     }
 }

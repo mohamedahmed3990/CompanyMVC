@@ -49,5 +49,22 @@ namespace CompanyMVC.BLL.Repositories
             _dbContext.Set<T>().Update(entity);
             return _dbContext.SaveChanges();
         }
+
+        public IEnumerable<T> GetAllSpecifications(ISpecifications<T> spec)
+        {
+            return ApplySpecifications(spec).ToList();
+        }
+
+        public T? GetByIdSpecification(ISpecifications<T> spec)
+        {
+            return ApplySpecifications(spec).FirstOrDefault();
+        }
+
+
+
+        private IQueryable<T> ApplySpecifications(ISpecifications<T> spec)
+        {
+            return SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), spec);
+        }
     }
 }
