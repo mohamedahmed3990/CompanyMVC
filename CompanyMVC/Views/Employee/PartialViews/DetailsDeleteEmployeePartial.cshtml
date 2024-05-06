@@ -6,6 +6,14 @@
     var departments = new SelectList(_unitOfWork.Repository<Department>().GetAll(), nameof(Department.Id), nameof(Department.Name));
 }
 
+@if(Model.ImageName is not null)
+{
+    <div>
+        <img src="~/files/Images/@Model.ImageName" width="100" height="100" class="image-fluid rounded-circle" />
+        <input type="hidden" asp-for="ImageName" />
+    </div>
+}
+
 <div class="form-group">
     <label class="col-form-label" asp-for="Name"></label>
     <input class="form-control" asp-for="Name" readonly />

@@ -29,6 +29,9 @@ namespace CompanyMVC.PL.ViewModels
         [Display(Name = "Hire Date")]
         public DateTime HireDate { get; set; }
 
+        public IFormFile? Image { get; set; }
+        public string? ImageName { get; set; }
+
         public int? DepartmentId { get; set; }
         public Department? Department { get; set; }
     }

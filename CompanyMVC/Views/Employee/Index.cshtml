@@ -35,6 +35,7 @@
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(E => E.Name)</th>
+                <th>@Html.DisplayNameFor(E => E.Image)</th>
                 <th>@Html.DisplayNameFor(E => E.Age)</th>
                 <th>@Html.DisplayNameFor(E => E.Address)</th>
                 <th>@Html.DisplayNameFor(E => E.Department)</th>
@@ -53,6 +54,9 @@
             {
                 <tr>
                     <td>@employee.Name</td>
+                    <td>
+                         <img src="~/files/Images/@employee.ImageName" width="75" class="image-fluid rounded-circle" />
+                    </td>
                     <td>@employee.Age</td>
                     <td>@employee.Address</td>
                     <td>@employee.Department?.Name</td>

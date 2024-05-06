@@ -5,6 +5,8 @@
     var departments = new SelectList(_unitOfWork.Repository<Department>().GetAll(), nameof(Department.Id), nameof(Department.Name));
 }
 
+<input asp-for="ImageName" hidden/>
+
 
 <div class="form-group">
     <label class="col-form-label" asp-for="Name"></label>
@@ -51,5 +53,10 @@
     <select class="form-control" asp-for="DepartmentId" asp-items="@departments">
         <option value="@null">-- Select Department --</option>
     </select>
+</div>
+
+<div class="form-group">
+    <label class="col-form-label" asp-for="Image"></label>
+    <input class="form-control" asp-for="Image"/>
 </div>
 

@@ -25,6 +25,7 @@ namespace CompanyMVC.DAL.Model
 
         public DateTime CreationDate { get; set; }
 
+        public string? ImageName { get; set; } 
         public int? DepartmentId { get; set; }
         public Department Department { get; set; }
     }

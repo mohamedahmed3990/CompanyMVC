@@ -3,6 +3,7 @@ using CompanyMVC.BLL.Interfaces;
 using CompanyMVC.BLL.Repositories;
 using CompanyMVC.BLL.Specifications;
 using CompanyMVC.DAL.Model;
+using CompanyMVC.PL.Helpers;
 using CompanyMVC.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,6 +59,8 @@ namespace CompanyMVC.PL.Controllers
         {
             if(ModelState.IsValid)
             {
+                employeeVM.ImageName = DocumentSettings.UploadFile(employeeVM.Image, "Images");
+
                 var employee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
                 var count = _unitOfWork.Repository<Employee>().Add(employee);
 
@@ -104,6 +107,13 @@ namespace CompanyMVC.PL.Controllers
             {
                 try
                 {
+                    if(employeeVM.Image is not null)
+                    {
+                        if(employeeVM.ImageName is not null)
+                            DocumentSettings.DeleteFile(employeeVM.ImageName, "Images");
+
+                        employeeVM.ImageName = DocumentSettings.UploadFile(employeeVM.Image, "Images");
+                    }
                     var employee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
                     _unitOfWork.Repository<Employee>().Update(employee);
                     return RedirectToAction(nameof(Index));
@@ -132,7 +142,11 @@ namespace CompanyMVC.PL.Controllers
             try
             {
                 var mappedEmployee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                _unitOfWork.Repository<Employee>().Delete(mappedEmployee);
+                 var count = _unitOfWork.Repository<Employee>().Delete(mappedEmployee);
+
+                if (count > 0 && employeeVM.ImageName is not null)
+                    DocumentSettings.DeleteFile(employeeVM.ImageName, "Images");
+
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
