@@ -11,6 +11,7 @@ namespace CompanyMVC.BLL.Interfaces
     {
         IGenericRepository<T> Repository<T>() where T : ModelBase;
 
+        public IEmployeeRepository _employeeRepository { get; set; }
         Task<int> CompleteAsync();
     }
 }

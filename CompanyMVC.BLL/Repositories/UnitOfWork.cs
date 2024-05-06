@@ -15,10 +15,13 @@ namespace CompanyMVC.BLL.Repositories
         private readonly AppDbContext _dbContext;
         private Hashtable _repositories;
 
+        public IEmployeeRepository _employeeRepository { get; set; }
+
         public UnitOfWork(AppDbContext dbContext)
         {
             _dbContext = dbContext;
             _repositories = new Hashtable();
+            _employeeRepository = new EmployeeRepository(dbContext);
         }
 
 

@@ -1,0 +1,58 @@
+﻿@model EmployeeViewModel
+
+@inject IUnitOfWork _unitOfWork
+
+@{
+    var departments = new SelectList(_unitOfWork.Repository<Department>().GetAll(), nameof(Department.Id), nameof(Department.Name));
+}
+
+@if(Model.ImageName is not null)
+{
+    <div>
+        <img src="~/files/Images/@Model.ImageName" width="100" height="100" class="image-fluid rounded-circle" />
+        <input type="hidden" asp-for="ImageName" />
+    </div>
+}
+
+<div class="form-group">
+    <label class="col-form-label" asp-for="Name"></label>
+    <input class="form-control" asp-for="Name" readonly />
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="Age"></label>
+    <input class="form-control" asp-for="Age" readonly />
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="Address"></label>
+    <input class="form-control" asp-for="Address" readonly />
+</div>
+
+<div class="form-group">
+    <label class="col-form-label" asp-for="Salary"></label>
+    <input class="form-control" asp-for="Salary" readonly />
+</div>
+<div class="form-check">
+    <input class="form-check-input" asp-for="IsActive" readonly />
+    <label class="col-form-label" asp-for="IsActive"></label>
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="Email"></label>
+    <input class="form-control" asp-for="Email" readonly />
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="PhoneNumber"></label>
+    <input class="form-control" asp-for="PhoneNumber" readonly />
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="HireDate"></label>
+    <input class="form-control" asp-for="HireDate" readonly />
+</div>
+
+<div class="form-group">
+    <label class="col-form-label" asp-for="Department"></label>
+    <select class="form-control" asp-for="DepartmentId" asp-items="@departments" disabled>
+        <option value="@null"> -- Select Department -- </option>
+
+    </select>
+</div>
+
