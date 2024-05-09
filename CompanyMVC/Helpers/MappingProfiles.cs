@@ -11,6 +11,8 @@ namespace CompanyMVC.PL.Helpers
             CreateMap<DepartmentViewModel, Department>().ReverseMap();
 
             CreateMap<EmployeeViewModel, Employee>().ReverseMap();
+
+            CreateMap<ApplicationUser, UserViewModel>().ReverseMap();
         }
     }
 }

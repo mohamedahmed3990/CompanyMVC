@@ -170,11 +170,6 @@ namespace CompanyMVC.PL.Controllers
 
 
 
-
-
-
-
-
 	}
 
 }
