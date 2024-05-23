@@ -30,7 +30,7 @@ namespace CompanyMVC.PL.Controllers
 				var users = await _userManager.Users.Select(u => new UserViewModel()
 				{
 					Id = u.Id,
-					FName = u.FName,
+					FName = u.FName,    
 					LName = u.LName,
 					Email = u.Email,
 					PhoneNumber = u.PhoneNumber,
@@ -65,8 +65,6 @@ namespace CompanyMVC.PL.Controllers
         public async Task<IActionResult> Details(string id, string viewName = "Details")
         {
             if (id is null) return BadRequest();
-
-            var spec = new EmployeeWithDepartmentSpecifications(id);
 
             var user = await _userManager.FindByIdAsync(id);
 			if (user is null)
