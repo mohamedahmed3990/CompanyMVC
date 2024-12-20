@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CompanyMVC.DAL.Model;
 using CompanyMVC.PL.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace CompanyMVC.PL.Helpers
 {
@@ -11,6 +12,10 @@ namespace CompanyMVC.PL.Helpers
             CreateMap<DepartmentViewModel, Department>().ReverseMap();
 
             CreateMap<EmployeeViewModel, Employee>().ReverseMap();
+
+            CreateMap<ApplicationUser, UserViewModel>().ReverseMap();
+
+            CreateMap<IdentityRole, RoleViewModel>().ReverseMap();
         }
     }
 }

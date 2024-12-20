@@ -2,11 +2,13 @@
 using CompanyMVC.BLL.Interfaces;
 using CompanyMVC.DAL.Model;
 using CompanyMVC.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyMVC.PL.Controllers
 {
-    public class DepartmentController : Controller
+	[Authorize]
+	public class DepartmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;

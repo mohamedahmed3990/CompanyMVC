@@ -1,7 +1,10 @@
 using CompanyMVC.BLL.Interfaces;
 using CompanyMVC.BLL.Repositories;
 using CompanyMVC.DAL.Data;
+using CompanyMVC.DAL.Model;
 using CompanyMVC.PL.Helpers;
+using CompanyMVC.PL.Settings;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CompanyMVC
@@ -24,6 +27,31 @@ namespace CompanyMVC
 
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                config.Password.RequiredUniqueChars = 2;
+                config.Password.RequireUppercase = true;
+                config.Password.RequireLowercase = true;
+                config.Password.RequireDigit = true;
+                config.Password.RequireNonAlphanumeric = true;
+                config.Password.RequiredLength = 5;
+                config.User.RequireUniqueEmail = true;
+                config.Lockout.MaxFailedAccessAttempts = 3;
+                config.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            builder.Services.ConfigureApplicationCookie(config =>
+            {
+                config.LoginPath = "/Account/SignIn";
+            });
+
+            // mailkit
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSetting"));
+
+            builder.Services.AddTransient<IMailSetting, EmailSettings>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -39,6 +67,7 @@ namespace CompanyMVC
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

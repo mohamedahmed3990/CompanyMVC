@@ -5,10 +5,12 @@ using CompanyMVC.BLL.Specifications;
 using CompanyMVC.DAL.Model;
 using CompanyMVC.PL.Helpers;
 using CompanyMVC.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyMVC.PL.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -59,7 +61,8 @@ namespace CompanyMVC.PL.Controllers
         {
             if(ModelState.IsValid)
             {
-                employeeVM.ImageName = DocumentSettings.UploadFile(employeeVM.Image, "Images");
+                if(employeeVM.Image is not null)
+                    employeeVM.ImageName = DocumentSettings.UploadFile(employeeVM.Image, "Images");
 
                 var employee = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
                 var count = _unitOfWork.Repository<Employee>().Add(employee);
